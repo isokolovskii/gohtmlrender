@@ -34,12 +34,15 @@ type Repository struct {
 	render Renderer
 }
 
+var Repo Repository
+
 // New creates a new instance of Repository with the given render object
 func New(r Renderer) *Repository {
-
-	return &Repository{
+	Repo = Repository{
 		render: r,
 	}
+
+	return &Repo
 }
 
 // Home is a method of the Repository type that renders the "home.page.tmpl" template.

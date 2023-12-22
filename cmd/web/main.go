@@ -22,10 +22,19 @@ func main() {
 	renderRepo := render.New(&appConfig)
 	handlersRepo := handlers.New(renderRepo)
 
-	http.HandleFunc("/", handlersRepo.Home)
-	http.HandleFunc("/about", handlersRepo.About)
+	portNumber := fmt.Sprintf(":%d", appConfig.Port)
 
-	log.Println("App listening to port", appConfig.Port)
+	srv := &http.Server{
+		Addr:    portNumber,
+		Handler: routes(handlersRepo),
+	}
 
-	_ = http.ListenAndServe(fmt.Sprintf(":%d", appConfig.Port), nil)
+	log.Printf("Starting application on port %d", appConfig.Port)
+
+	err := srv.ListenAndServe()
+	if err != nil {
+		log.Fatalf("Unable to start server on port %d: %v", appConfig.Port, err)
+		return
+	}
+
 }
