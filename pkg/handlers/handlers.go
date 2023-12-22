@@ -56,7 +56,7 @@ func New(r Renderer) *Repository {
 // The template cache is used to retrieve the template by name before rendering.
 // If the template is not found in the cache, it is created using the createTemplateByName function.
 // The executeTemplate function is responsible for executing the template and writing the output to the http.ResponseWriter.
-func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
+func (m *Repository) Home(w http.ResponseWriter, _ *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["title"] = "Home page"
 
@@ -69,7 +69,7 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 // It uses the render.RenderTemplate method of the Repository's render field to render the template.
 // If the template is not found in the cache, it tries to create one using the createTemplateByName function.
 // If the template rendering or writing to the response fails, an error is logged.
-func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
+func (m *Repository) About(w http.ResponseWriter, _ *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["title"] = "About"
 
