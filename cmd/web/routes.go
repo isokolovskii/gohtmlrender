@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/bmizerany/pat"
+	"github.com/go-chi/chi/v5"
 	"github.com/ivan3177/gohtmlrender/pkg/handlers"
 	"net/http"
 )
@@ -12,10 +12,10 @@ import (
 // It returns the configured router as an http.Handler object.
 // The router is responsible for handling incoming HTTP requests and routing them to the appropriate handler functions.
 func routes(handlersRepo *handlers.Repository) http.Handler {
-	mux := pat.New()
+	mux := chi.NewRouter()
 
-	mux.Get("/", http.HandlerFunc(handlersRepo.Home))
-	mux.Get("/about", http.HandlerFunc(handlersRepo.About))
+	mux.Get("/", handlersRepo.Home)
+	mux.Get("/about", handlersRepo.About)
 
 	return mux
 }
