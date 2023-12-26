@@ -7,16 +7,32 @@ import (
 	"net/http"
 )
 
-// routes is a function that sets up the routing for the application.
-// It takes in an instance of the AppConfig struct and a handlers.Repository struct.
-// It creates a new pat router and registers the handler functions for the root and about routes.
-// It returns the configured router as an http.Handler object.
-// The router is responsible for handling incoming HTTP requests and routing them to the appropriate handler functions.
+// routes initializes and configures the Router for the application's routes.
+// It sets up middleware for error recovery, CSRF protection, and session management.
+// It also registers the routes for the Home and About pages.
+// The handler functions for the routes are provided through the handlers.Repository parameter.
+// The configured Router is returned as an http.Handler.
+//
+// Example usage:
+//
+//	renderRepo := render.New(&appConfig)
+//	handlersRepo := handlers.New(renderRepo, session)
+//
+//	srv := &http.Server{
+//	    Addr:    portNumber,
+//	    Handler: routes(handlersRepo),
+//	}
+//	err := srv.ListenAndServe()
+//	if err != nil {
+//	    log.Fatalf("Unable to start server on port %d: %v", appConfig.Port, err)
+//	    return
+//	}
 func routes(handlersRepo *handlers.Repository) http.Handler {
 	mux := chi.NewRouter()
 
 	mux.Use(middleware.Recoverer)
 	mux.Use(NoSurf)
+	mux.Use(SessionLoad)
 
 	mux.Get("/", handlersRepo.Home)
 	mux.Get("/about", handlersRepo.About)

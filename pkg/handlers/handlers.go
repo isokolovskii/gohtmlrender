@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/alexedwards/scs/v2"
 	"github.com/ivan3177/gohtmlrender/pkg/models"
 	"net/http"
 )
@@ -31,15 +32,17 @@ type Renderer interface {
 // Repository is a type that represents a repository of rendered templates.
 // It contains a pointer to a render.Repository, which provides methods for rendering templates.
 type Repository struct {
-	render Renderer
+	render         Renderer
+	sessionManager *scs.SessionManager
 }
 
 var Repo Repository
 
 // New creates a new instance of Repository with the given render object
-func New(r Renderer) *Repository {
+func New(r Renderer, sessionManage *scs.SessionManager) *Repository {
 	Repo = Repository{
-		render: r,
+		render:         r,
+		sessionManager: sessionManage,
 	}
 
 	return &Repo
