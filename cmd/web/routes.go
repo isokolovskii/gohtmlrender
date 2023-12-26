@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/ivan3177/gohtmlrender/pkg/handlers"
 	"net/http"
 )
@@ -13,6 +14,8 @@ import (
 // The router is responsible for handling incoming HTTP requests and routing them to the appropriate handler functions.
 func routes(handlersRepo *handlers.Repository) http.Handler {
 	mux := chi.NewRouter()
+
+	mux.Use(middleware.Recoverer)
 
 	mux.Get("/", handlersRepo.Home)
 	mux.Get("/about", handlersRepo.About)
